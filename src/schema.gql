@@ -8,6 +8,7 @@ scalar Date
 
 type Mutation {
   addRecipe(newRecipeData: NewRecipeInput!): Recipe!
+  addRecipeOptionalArg(newRecipeData: NewRecipeInput): Recipe
   removeRecipe(id: String!): Boolean!
 }
 

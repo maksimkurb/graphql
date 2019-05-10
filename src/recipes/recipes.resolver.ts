@@ -37,6 +37,24 @@ export class RecipesResolver {
     return recipe;
   }
 
+  @Mutation(returns => Recipe, { nullable: true })
+  async addRecipeOptionalArg(
+    @Args({
+      name: 'newRecipeData',
+      type: () => NewRecipeInput,
+      nullable: true,
+    })
+    newRecipeData: NewRecipeInput,
+  ): Promise<Recipe> {
+    if (newRecipeData) {
+      const recipe = await this.recipesService.create(newRecipeData);
+      pubSub.publish('recipeAdded', { recipeAdded: recipe });
+      return recipe;
+    } else {
+      return null;
+    }
+  }
+
   @Mutation(returns => Boolean)
   async removeRecipe(@Args('id') id: string) {
     return this.recipesService.remove(id);
